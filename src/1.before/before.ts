@@ -47,7 +47,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     intent: {
       actions: [
         createAccount(),
-        transfer({ amount: { near: '100' } }),
+        transfer({ amount: { near: '10' } }),
         addFullAccessKey({ publicKey: ownerPublicKey }),
       ],
       receiverAccountId: userId,
@@ -66,7 +66,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     intent: {
       actions: [
         createAccount(),
-        transfer({ amount: { near: '20' } }),
+        transfer({ amount: { near: '5' } }),
         addFullAccessKey({ publicKey: ownerPublicKey }),
         deployContract({ wasmBytes: new Uint8Array(buffer) }),
         functionCall({
