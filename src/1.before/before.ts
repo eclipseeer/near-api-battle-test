@@ -24,7 +24,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
   console.log('Start preparations...');
   console.time('Preparations done:');
 
-  const client = await createClient({
+  const client = createClient({
     transport: {
       rpcEndpoints: {
         regular: [{ url: rpcUrl }],
@@ -32,11 +32,11 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     },
   });
 
-  const keyService = await createMemoryKeyService({
+  const keyService = createMemoryKeyService({
     keySource: { privateKey: ownerPrivateKey },
   });
 
-  const owner = await createMemorySigner({
+  const owner = createMemorySigner({
     signerAccountId: ownerId,
     client,
     keyService,
@@ -54,7 +54,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     },
   });
 
-  // Create 1 FT contract
+  // Create a 1 FT contract
   const buffer = await readFile(
     path.join(
       path.dirname(fileURLToPath(import.meta.url)),
@@ -89,7 +89,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
   });
 
   await sleep(2000);
-  // Check FT balance of user
+  // Check FT balance of the user
   const ftBalance = await client.callContractReadFunction({
     contractAccountId: ftContractId,
     functionName: 'ft_balance_of',
@@ -124,6 +124,5 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     },
   });
 
-  owner.stop();
   console.timeEnd('Preparations done:');
 };

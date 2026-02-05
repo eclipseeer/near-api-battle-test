@@ -9,19 +9,25 @@ import {
   transfer,
   type AccountId,
   type PrivateKey,
+  createClient,
 } from 'near-api-ts';
+import { rpcUrl } from '../utils';
 
 export const signerAccountId = process.env.OWNER_ACCOUNT_ID as AccountId;
 export const signerPrivateKey = process.env.OWNER_PRIVATE_KEY as PrivateKey;
 
 // 1. Setup base signer;
-const client = await createTestnetClient();
+const client = createTestnetClient();
 
-const baseKeyService = await createMemoryKeyService({
+// const client = createClient({
+//   transport: { rpcEndpoints: { regular: [{ url: rpcUrl }] } },
+// });
+
+const baseKeyService = createMemoryKeyService({
   keySource: { privateKey: signerPrivateKey },
 });
 
-const baseSigner = await createMemorySigner({
+const baseSigner = createMemorySigner({
   signerAccountId,
   client,
   keyService: baseKeyService,
@@ -30,17 +36,18 @@ const baseSigner = await createMemorySigner({
 // 2. Add 10 full access keys for this signer;
 const keyPairs = new Array(10).fill(0).map(() => randomEd25519KeyPair());
 
-await baseSigner.executeTransaction({
+const tx1 = await baseSigner.executeTransaction({
   intent: {
     actions: keyPairs.map((keyPair) => addFullAccessKey(keyPair)),
     receiverAccountId: signerAccountId,
   },
 });
+console.log('Added 10 full access keys', tx1.rawRpcResult.transaction.hash);
 
 // 3. Set up a signer with 10 keys
-const keyService = await createMemoryKeyService({ keySources: keyPairs });
+const keyService = createMemoryKeyService({ keySources: keyPairs });
 
-const signer = await createMemorySigner({
+const signer = createMemorySigner({
   signerAccountId,
   client,
   keyService,
@@ -69,6 +76,3 @@ await baseSigner.executeTransaction({
     receiverAccountId: baseSigner.signerAccountId,
   },
 });
-
-baseSigner.stop();
-signer.stop();
