@@ -38,9 +38,7 @@ export const testNat = async (userId: string, ftContractId: string) => {
 
   await baseUser.executeTransaction({
     intent: {
-      actions: keyPairs.map((keyPair) =>
-        addFullAccessKey({ publicKey: keyPair.publicKey }),
-      ),
+      actions: keyPairs.map((keyPair) => addFullAccessKey(keyPair)),
       receiverAccountId: baseUser.signerAccountId,
     },
   });
@@ -56,6 +54,18 @@ export const testNat = async (userId: string, ftContractId: string) => {
     keyService,
     taskQueue: { timeoutMs: 600_000 },
   });
+
+  // Check balance before run
+  const ftTokensBalanceBefore = await client.callContractReadFunction({
+    contractAccountId: ftContractId,
+    functionName: 'ft_balance_of',
+    functionArgs: { account_id: getReceiverId(0) },
+  });
+
+  console.log(
+    `${getReceiverId(0)} ft balance (units):`,
+    ftTokensBalanceBefore.result,
+  );
 
   // Send 1000 TXs to 10 accounts in parallel; 10 TXs per 1 key; 100 TX per 1 receiver
   const executeFtTransfer = (receiverId: string, units: string) =>
@@ -94,17 +104,6 @@ export const testNat = async (userId: string, ftContractId: string) => {
       return acc;
     }, []);
 
-  // Check balance before run
-  const ftTokensBalanceBefore = await client.callContractReadFunction({
-    contractAccountId: ftContractId,
-    functionName: 'ft_balance_of',
-    functionArgs: { account_id: getReceiverId(0) },
-  });
-  console.log(
-    `${getReceiverId(0)} ft balance (units):`,
-    ftTokensBalanceBefore.result,
-  );
-
   // TIME TO RUN THE TEST!
 
   // Count all output fetch requests to RPC
@@ -125,7 +124,7 @@ export const testNat = async (userId: string, ftContractId: string) => {
   try {
     await Promise.all(txs);
   } catch (e) {
-    console.log(e);
+    console.dir(e, { depth: null });
   }
 
   console.timeEnd(`${txs.length} transactions done:`);

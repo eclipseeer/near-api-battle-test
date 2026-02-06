@@ -6,14 +6,16 @@
     "before": "tsx src/near-api-ts/main-test/1.before/before.ts",
     "test-nat": "tsx src/near-api-ts/main-test/2.test/testNat.ts",
     "after": "tsx src/near-api-ts/main-test/3.after/after.ts",
-    "run-nat-test": "tsx src/near-api-ts/main-test/runNatTest.ts",
+    "run-near-api-ts-test": "tsx src/near-api-ts/main-test/run.ts",
+    "run-near-kit-test": "tsx src/near-kit/main-test/run.ts",
     "run-send-100-transferst": "tsx src/near-api-ts/other-tests/send100Transfers.ts",
     "check-account-info": "tsx src/near-api-ts/main-test/checkAccountsInfo.ts"
   },
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
     "dotenv": "^17.2.3",
-    "near-api-ts": "^0.6.0"
+    "near-api-ts": "^0.6.0",
+    "near-kit": "^0.10.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.9",
