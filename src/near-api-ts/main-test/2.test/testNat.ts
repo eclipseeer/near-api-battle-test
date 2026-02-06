@@ -12,7 +12,6 @@ import {
   numberOfReceivers,
   ownerPrivateKey,
   rpcUrl,
-  sleep,
 } from '../utils';
 import diagnosticsChannel from 'node:diagnostics_channel';
 
@@ -20,20 +19,16 @@ export const testNat = async (userId: string, ftContractId: string) => {
   console.log('Start adding keys...');
   console.time('Adding keys done:');
 
-  const client = await createClient({
-    transport: {
-      rpcEndpoints: {
-        regular: [{ url: rpcUrl }],
-      },
-    },
+  const client = createClient({
+    transport: { rpcEndpoints: { regular: [{ url: rpcUrl }] } },
   });
 
   // add 100 FA keys for nat user
-  const baseKeyService = await createMemoryKeyService({
+  const baseKeyService = createMemoryKeyService({
     keySource: { privateKey: ownerPrivateKey },
   });
 
-  const baseUser = await createMemorySigner({
+  const baseUser = createMemorySigner({
     signerAccountId: userId,
     client,
     keyService: baseKeyService,
@@ -52,22 +47,17 @@ export const testNat = async (userId: string, ftContractId: string) => {
 
   console.timeEnd('Adding keys done:');
 
-  baseUser.stop();
+  // create a new keyService with 100 keys
+  const keyService = createMemoryKeyService({ keySources: keyPairs });
 
-  // create new keyService with 100 keys
-  const keyService = await createMemoryKeyService({ keySources: keyPairs });
-
-  // make sure data updated
-  await sleep(3000);
-
-  const user = await createMemorySigner({
+  const user = createMemorySigner({
     signerAccountId: userId,
     client,
     keyService,
-    taskQueue: { maxWaitInQueueMs: 600_000 },
+    taskQueue: { timeoutMs: 600_000 },
   });
 
-  // Send 1000 TXs to 10 accounts in parallel; 10 TXs per 1 key;  100 TX per 1 receiver
+  // Send 1000 TXs to 10 accounts in parallel; 10 TXs per 1 key; 100 TX per 1 receiver
   const executeFtTransfer = (receiverId: string, units: string) =>
     user.executeTransaction({
       intent: {
@@ -104,7 +94,6 @@ export const testNat = async (userId: string, ftContractId: string) => {
       return acc;
     }, []);
 
-  await sleep(2000);
   // Check balance before run
   const ftTokensBalanceBefore = await client.callContractReadFunction({
     contractAccountId: ftContractId,
@@ -141,17 +130,16 @@ export const testNat = async (userId: string, ftContractId: string) => {
 
   console.timeEnd(`${txs.length} transactions done:`);
   console.log(`HTTP requests send: ${requestCount}`);
-  user.stop();
 
   // END OF THE TEST
 
-  await sleep(3000);
   // Check balance after
   const ftTokensBalanceAfter = await client.callContractReadFunction({
     contractAccountId: ftContractId,
     functionName: 'ft_balance_of',
     functionArgs: { account_id: getReceiverId(0) },
   });
+
   console.log(
     `${getReceiverId(0)} ft balance (units):`,
     ftTokensBalanceAfter.result,

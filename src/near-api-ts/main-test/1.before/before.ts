@@ -25,11 +25,7 @@ export const runBefore = async (userId: string, ftContractId: string) => {
   console.time('Preparations done:');
 
   const client = createClient({
-    transport: {
-      rpcEndpoints: {
-        regular: [{ url: rpcUrl }],
-      },
-    },
+    transport: { rpcEndpoints: { regular: [{ url: rpcUrl }] } },
   });
 
   const keyService = createMemoryKeyService({
@@ -88,7 +84,6 @@ export const runBefore = async (userId: string, ftContractId: string) => {
     },
   });
 
-  await sleep(2000);
   // Check FT balance of the user
   const ftBalance = await client.callContractReadFunction({
     contractAccountId: ftContractId,

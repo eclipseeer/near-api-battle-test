@@ -11,7 +11,7 @@ import {
   type PrivateKey,
   createClient,
 } from 'near-api-ts';
-import { rpcUrl } from '../utils';
+import { rpcUrl } from '../main-test/utils';
 
 export const signerAccountId = process.env.OWNER_ACCOUNT_ID as AccountId;
 export const signerPrivateKey = process.env.OWNER_PRIVATE_KEY as PrivateKey;

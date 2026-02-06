@@ -1,12 +1,8 @@
 import { createClient } from 'near-api-ts';
 import { getFtContractId, getReceiverId, getUserId, rpcUrl } from './utils';
 
-const client = await createClient({
-  transport: {
-    rpcEndpoints: {
-      regular: [{ url: rpcUrl }],
-    },
-  },
+const client = createClient({
+  transport: { rpcEndpoints: { regular: [{ url: rpcUrl }] } },
 });
 
 const res = await Promise.all([
@@ -24,4 +20,4 @@ const res = await Promise.all([
   client.safeGetAccountInfo({ accountId: getReceiverId(9) }),
 ]);
 
-console.log(res.map(r => r.ok));
+console.log(res.map((r) => r.ok));

@@ -17,15 +17,11 @@ export const runAfter = async (userId: string, ftContractId: string) => {
   console.log('Start cleanup...');
   console.time('End cleanup:');
 
-  const client = await createClient({
-    transport: {
-      rpcEndpoints: {
-        regular: [{ url: rpcUrl }],
-      },
-    },
+  const client = createClient({
+    transport: { rpcEndpoints: { regular: [{ url: rpcUrl }] } },
   });
 
-  const keyService = await createMemoryKeyService({
+  const keyService = createMemoryKeyService({
     keySource: { privateKey: ownerPrivateKey },
   });
 
@@ -48,8 +44,6 @@ export const runAfter = async (userId: string, ftContractId: string) => {
     });
 
   await Promise.all(signers.map((signer) => deleteAccountAction(signer)));
-
-  signers.forEach((signer) => signer.stop());
 
   console.timeEnd('End cleanup:');
 };

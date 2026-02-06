@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "before": "tsx src/1.before/before.ts",
-    "test-nat": "tsx src/2.test/testNat.ts",
-    "after": "tsx src/3.after/after.ts",
-    "run-nat-test": "tsx src/runNatTest.ts",
-    "run-send-100-transferst": "tsx src/otherTests/send100Transfers.ts",
-    "check-account-info": "tsx src/checkAccountsInfo.ts"
+    "before": "tsx src/near-api-ts/main-test/1.before/before.ts",
+    "test-nat": "tsx src/near-api-ts/main-test/2.test/testNat.ts",
+    "after": "tsx src/near-api-ts/main-test/3.after/after.ts",
+    "run-nat-test": "tsx src/near-api-ts/main-test/runNatTest.ts",
+    "run-send-100-transferst": "tsx src/near-api-ts/other-tests/send100Transfers.ts",
+    "check-account-info": "tsx src/near-api-ts/main-test/checkAccountsInfo.ts"
   },
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
