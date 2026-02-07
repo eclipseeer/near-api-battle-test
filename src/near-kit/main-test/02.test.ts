@@ -101,7 +101,7 @@ export const testKit = async (userId: string, ftContractId: string) => {
     requestCount++;
   });
 
-  const txs = new Array(100).fill(0).reduce((acc) => {
+  const txs = new Array(10).fill(0).reduce((acc) => {
     acc.push(...createFullTxPackForOneRun());
     return acc;
   }, []);
@@ -119,7 +119,6 @@ export const testKit = async (userId: string, ftContractId: string) => {
       'Rejected txs:',
       res.reduce((acc, r) => acc + (r.status === 'rejected' ? 1 : 0), 0),
     );
-
   } catch (e) {
     console.log(e);
   }

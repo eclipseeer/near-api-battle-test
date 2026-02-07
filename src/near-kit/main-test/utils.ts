@@ -8,7 +8,6 @@ export const ownerPublicKey = process.env.OWNER_PUBLIC_KEY as any;
 export const numberOfReceivers = 10;
 
 export const getFtContractId = () => `nabt-near-kit-ft.${ownerId}`;
-
 export const getUserId = () => `nabt-near-kit-user.${ownerId}`;
 
 export const getReceiverId = (index: number) =>

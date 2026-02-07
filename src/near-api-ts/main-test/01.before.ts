@@ -11,14 +11,14 @@ import {
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { numberOfReceivers, storageDeposit } from '../utils';
+import { numberOfReceivers, storageDeposit } from './utils';
 import {
   rpcUrl,
   ownerId,
   ownerPrivateKey,
   ownerPublicKey,
   getReceiverId,
-} from '../utils';
+} from './utils';
 
 export const runBefore = async (userId: string, ftContractId: string) => {
   console.log('Start preparations...');

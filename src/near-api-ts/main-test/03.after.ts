@@ -11,7 +11,7 @@ import {
   ownerId,
   ownerPrivateKey,
   rpcUrl,
-} from '../utils';
+} from './utils';
 
 export const runAfter = async (userId: string, ftContractId: string) => {
   console.log('Start cleanup...');

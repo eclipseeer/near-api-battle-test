@@ -1,6 +1,6 @@
-import { runBefore } from './1.before/before';
-import { testNat } from './2.test/testNat';
-import { runAfter } from './3.after/after';
+import { runBefore } from './01.before';
+import { testNat } from './02.test';
+import { runAfter } from './03.after';
 import { getFtContractId, getUserId } from './utils';
 import diagnosticsChannel from 'node:diagnostics_channel';
 

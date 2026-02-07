@@ -12,7 +12,7 @@ import {
   numberOfReceivers,
   ownerPrivateKey,
   rpcUrl,
-} from '../utils';
+} from './utils';
 import diagnosticsChannel from 'node:diagnostics_channel';
 
 export const testNat = async (userId: string, ftContractId: string) => {
@@ -113,7 +113,8 @@ export const testNat = async (userId: string, ftContractId: string) => {
     requestCount++;
   });
 
-  const txs = new Array(100).fill(0).reduce((acc) => {
+  // 10 txs per receiver * 10 receivers * 100 runs = 10 000 txs
+  const txs = new Array(10).fill(0).reduce((acc) => {
     acc.push(...createFullTxPackForOneRun());
     return acc;
   }, []);
@@ -122,7 +123,18 @@ export const testNat = async (userId: string, ftContractId: string) => {
   console.time(`${txs.length} transactions done:`);
 
   try {
-    await Promise.all(txs);
+    const res = await Promise.allSettled(txs);
+    console.log(
+      'Successful txs:',
+      res.reduce(
+        (acc, r) => acc + (r.status === 'fulfilled' && r.value ? 1 : 0),
+        0,
+      ),
+    );
+    console.log(
+      'Rejected txs:',
+      res.reduce((acc, r) => acc + (r.status === 'rejected' ? 1 : 0), 0),
+    );
   } catch (e) {
     console.dir(e, { depth: null });
   }
