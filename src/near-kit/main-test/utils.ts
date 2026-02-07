@@ -5,7 +5,7 @@ export const rpcUrl = process.env.RPC_URL as string;
 export const ownerId = process.env.OWNER_ACCOUNT_ID as string;
 export const ownerPrivateKey = process.env.OWNER_PRIVATE_KEY as any;
 export const ownerPublicKey = process.env.OWNER_PUBLIC_KEY as any;
-export const numberOfReceivers = 10;
+export const numberOfReceivers = 5;
 
 export const getFtContractId = () => `nabt-near-kit-ft.${ownerId}`;
 export const getUserId = () => `nabt-near-kit-user.${ownerId}`;

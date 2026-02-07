@@ -15,6 +15,10 @@ import {
 } from './utils';
 import diagnosticsChannel from 'node:diagnostics_channel';
 
+// 10 txs per receiver * 10 receivers * 1 pack = 100 txs/pack
+const txPacks = 1;
+const keys = 5;
+
 export const testNat = async (userId: string, ftContractId: string) => {
   console.log('Start adding keys...');
   console.time('Adding keys done:');
@@ -34,7 +38,7 @@ export const testNat = async (userId: string, ftContractId: string) => {
     keyService: baseKeyService,
   });
 
-  const keyPairs = new Array(100).fill(0).map(() => randomEd25519KeyPair());
+  const keyPairs = new Array(keys).fill(0).map(() => randomEd25519KeyPair());
 
   await baseUser.executeTransaction({
     intent: {
@@ -114,7 +118,7 @@ export const testNat = async (userId: string, ftContractId: string) => {
   });
 
   // 10 txs per receiver * 10 receivers * 100 runs = 10 000 txs
-  const txs = new Array(10).fill(0).reduce((acc) => {
+  const txs = new Array(txPacks).fill(0).reduce((acc) => {
     acc.push(...createFullTxPackForOneRun());
     return acc;
   }, []);

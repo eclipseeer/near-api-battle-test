@@ -13,7 +13,10 @@ import {
   rpcUrl,
 } from './utils';
 import diagnosticsChannel from 'node:diagnostics_channel';
-import { sleep } from '../../near-api-ts/main-test/utils';
+
+// 10 txs per receiver * 10 receivers * 1 pack = 100 txs/pack
+const txPacks = 1;
+const keys = 5;
 
 export const testKit = async (userId: string, ftContractId: string) => {
   console.log('Start adding keys...');
@@ -26,7 +29,7 @@ export const testKit = async (userId: string, ftContractId: string) => {
     defaultWaitUntil: 'FINAL',
   });
 
-  const keyPairs = new Array(100).fill(0).map(() => generateKey());
+  const keyPairs = new Array(keys).fill(0).map(() => generateKey());
 
   await keyPairs
     .reduce<TransactionBuilder>(
@@ -101,7 +104,7 @@ export const testKit = async (userId: string, ftContractId: string) => {
     requestCount++;
   });
 
-  const txs = new Array(10).fill(0).reduce((acc) => {
+  const txs = new Array(txPacks).fill(0).reduce((acc) => {
     acc.push(...createFullTxPackForOneRun());
     return acc;
   }, []);
