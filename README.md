@@ -28,7 +28,7 @@
 | Successful TPS        | 97.8 | 129.0 | NEAR KIT (1.32× higher) |
 
 **Quick takeaways (SANDBOX):**
-- **NEAR KIT** is faster on total time (~**1.84×**) and transaction phase (~**1.74×**), but has **~24% rejected tx**.
+- **NEAR KIT** is faster on total time (~ **1.84×**) and transaction phase (~ **1.74×**), but has **~24% rejected tx**.
 - **NEAR API TS** delivers **100% success** and is much more network-efficient: **~5.2× fewer HTTP** per test and **~6.8× fewer HTTP per successful tx**.
 
 ---
